@@ -1,5 +1,5 @@
 const graphqlUrl = process.env.NODE_ENV === 'production'
-? 'https://rj-blog.herokuapp.com/api/graphql'
+? 'https://sitewrite.herokuapp.com/api/graphql'
 : 'http://localhost:3000/api/graphql'
 
 export async function fetchData(query) {
