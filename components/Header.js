@@ -1,8 +1,8 @@
 import Head from 'next/head'
 
 export default function Header({ props }) {
-  const title = props.title || 'SiteWrite | A simple blog site'
-  const description = props.description || 'A simple blog site made with Next.js'
+  const title = props && props.title
+  const description = props && props.description
   return (
     <Head>
       <title>{title}</title>
