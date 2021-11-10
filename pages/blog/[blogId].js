@@ -1,25 +1,87 @@
-import { useState, useEffect, userCallback } from 'react'
-import { getBlog } from '../../db/data/query'
-import CommentForm from '../../components/Form/Comment'
+import { useState, useEffect } from 'react'
+import Link from 'next/link'
+import { getBlog, insertComment } from '../../db/data/query'
+import { CommentForm, Alert } from '../../components'
 
 export default function BlogDetails({ props }) {
   const [blog, setBlog] = useState(props)
+  const [showAlert, setShowAlert] = useState(false)
+  const [errorMsg, setErrorMsg] = useState('')
+  const [comments] = useState(props.comments.reverse())
+
+  const handleCommentSubmit = async (data, e) => {
+    e.preventDefault()
+
+    try {
+      await insertComment(blogId, data.comment)
+      const newBlog = await getBlog(blog.id)
+      setBlog(newBlog)
+      e.target.reset()
+    } catch (err) {
+      setErrorMsg(`${err.status}: ${err.statusText}`)
+      setShowAlert(true)
+    }
+  }
 
   useEffect(() => setBlog(blog), [])
 
   return (
-    <div className="container mx-auto">
-      <p>{blog.title}</p>
-      <p>{blog.body}</p>
-      <p>{blog.type}</p>
-      <h2 className='text-3xl'>Comments</h2>
+    <div className="container mx-auto pt-10">
+      <Alert errorMsg={errorMsg} showAlert={showAlert} setShowAlert={setShowAlert} />
+      <div className="mb-4 md:mb-0 w-full mx-auto relative">
+        <div className="px-4 lg:px-0">
+          <h2 className="text-4xl font-semibold text-gray-800 leading-tight">
+            {blog.title}
+          </h2>
+          <Link href={`/blog?type=${blog.type}`}>
+            <a className="py-2 capitalize text-green-700 inline-flex items-center justify-center mb-2">
+              {blog.type}
+            </a>
+          </Link>
+        </div>
+        <img
+          src="https://images.unsplash.com/photo-1587614387466-0a72ca909e16?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2100&q=80"
+          className="w-full object-cover lg:rounded"
+          style={{ height: "28em" }}
+        />
+      </div>
+      <div className="flex flex-col lg:flex-row lg:space-x-12">
+        <div className="px-4 lg:px-0 mt-12 text-gray-700 text-lg leading-relaxed w-full lg:w-3/4">
+          <p>{blog.body}</p>
+        </div>
+        <div className="w-full lg:w-1/4 m-auto mt-12 max-w-screen-sm">
+          <div className="p-4 border-t border-b border-gray-400 md:border md:rounded">
+            <div className="flex py-2">
+              <img src="https://randomuser.me/api/portraits/men/97.jpg"
+                className="h-10 w-10 rounded-full mr-2 object-cover" />
+              <div>
+                <p className="font-semibold text-gray-700 text-sm">Mike Sullivan</p>
+                <p className="font-semibold text-gray-600 text-xs">Editor</p>
+              </div>
+            </div>
+            <p className="text-gray-700 py-3">
+              Mike writes about technology
+              Yourself required no at thoughts delicate landlord it be. Branched dashwood do is whatever it.
+            </p>
+            <button className="px-2 py-1 text-gray-100 bg-green-700 flex w-full items-center justify-center rounded">
+              Follow
+              <i className='bx bx-user-plus ml-2' ></i>
+            </button>
+          </div>
+        </div>
+      </div>
       <hr />
-      {
-        blog.comments.reverse().map(({ id, comment }) => (
-          <p key={id}>{comment}</p>
-        ))
-      }
-      <CommentForm setBlog={setBlog} blogId={props.id} />
+      <div className="pt-10">
+        <CommentForm onSubmit={handleCommentSubmit} blogId={blog.id} />
+      </div>
+      <div className="bg-white px-8">
+        <h2 className='text-3xl mb-4'>Comments ({blog.comments.length})</h2>
+        {
+          comments.map(({ id, comment }) => (
+            <p key={id} className="pb-2">{comment}</p>
+          ))
+        }
+      </div>
     </div>
   )
 }
