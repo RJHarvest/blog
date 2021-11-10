@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import Header from '../components/Header'
-import BlogForm from '../components/Form/Blog'
 import { getBlogs, getTypeCount } from '../db/data/query'
 import { formatDate } from '../shared/utils'
 
@@ -11,7 +9,7 @@ export default function Home({ props, categories, typeCount }) {
   useEffect(() => setBlogs(props.docs), [])
 
   return (
-    <div className="p-12">
+    <div className="p-3 lg:p-12">
       <div className="block md:flex md:space-x-2 px-2 lg:p-0">
         <Link href="/blog">
           <a className="mb-4 md:mb-0 h-96 w-full md:w-2/3 relative rounded inline-block">

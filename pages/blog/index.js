@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import BlogCard from '../../components/BlogCard'
+import { BlogCard } from '../../components'
 import { getBlogs } from '../../db/data/query'
 import { getTagColor, formatDate } from '../../shared/utils'
 

@@ -1,4 +1,4 @@
-import Layout from '../components/Layout'
+import Layout from '../components'
 import 'tailwindcss/tailwind.css'
 
 const categories = ['food', 'travel', 'tech', 'lifestyle']
