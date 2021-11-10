@@ -1,15 +1,17 @@
 import Head from 'next/head'
 
 export default function Header({ props }) {
+  const title = props.title || 'SiteWrite | A simple blog site'
+  const description = props.description || 'A simple blog site made with Next.js'
   return (
     <Head>
-      <title>{props.title}</title>
-      <meta name='title' content={props.title} />
-      <meta name='description' content={props.description} />
+      <title>{title}</title>
+      <meta name='title' content={title} />
+      <meta name='description' content={description} />
       <meta property="og:locale" content="en_US" />
       <meta property="og:type" content="website" />
-      <meta property="og:title" content={props.title} />
-      <meta property="og:description" content={props.description} />
+      <meta property="og:title" content={title} />
+      <meta property="og:description" content={description} />
       <meta property="og:url" content="https://rj-blog.herokuapp.com" />
       <meta property="og:site_name" content="SiteWrite | A simple blog site" />
       <meta name="twitter:card" content="summary" />
