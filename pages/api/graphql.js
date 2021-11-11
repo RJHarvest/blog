@@ -1,4 +1,5 @@
 import { ApolloServer } from 'apollo-server-micro'
+import { getSession } from 'next-auth/client'
 import typeDefs from '../../db/data/schema'
 import resolvers from '../../db/data/resolvers'
 import connectDb from '../../db/config'
@@ -11,7 +12,14 @@ export const config = {
   },
 }
 
-const apolloServer = new ApolloServer({ typeDefs, resolvers })
+const apolloServer = new ApolloServer({
+  typeDefs,
+  resolvers,
+  context: async ({ req }) => {
+    const session = await getSession({ req })
+    return { session }
+  },
+})
 const startServer = apolloServer.start()
 
 export default async function handler(req, res) {
