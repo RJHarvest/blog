@@ -21,6 +21,7 @@
     "micro": "^9.3.4",
     "mongodb": "^4.1.4",
     "mongoose": "^6.0.12",
+    "mongoose-autopopulate": "^0.16.0",
     "mongoose-paginate": "^5.0.3",
     "next": "latest",
     "next-auth": "^3.29.0",
