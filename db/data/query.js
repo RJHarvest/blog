@@ -1,6 +1,4 @@
-const graphqlUrl = process.env.NODE_ENV === 'production'
-? 'https://sitewrite.herokuapp.com/api/graphql'
-: 'http://localhost:3000/api/graphql'
+const graphqlUrl = `${process.env.NEXTAUTH_URL}/api/graphql`
 
 export async function fetchData(query) {
   const res = await fetch(graphqlUrl, {
@@ -12,6 +10,7 @@ export async function fetchData(query) {
   })
   if (!res.ok) return Promise.reject(res)
   const resBody = await res.json()
+  if (resBody.errors) return Promise.reject(resBody.errors[0])
   return Promise.resolve(resBody.data)
 }
 
