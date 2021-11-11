@@ -2,7 +2,9 @@ import Link from 'next/link'
 import { getTagColor, formatDate } from '../shared/utils'
 
 export default function BlogCard({ blog }) {
-  const { id, title, body, type, createdAt } = blog
+  const { id, title, body, type, createdAt, user: { name, imageUrl } } = blog
+  console.log('blog 1', name);
+  console.log('blog 2', imageUrl);
   const tagColor = getTagColor(type)
   return (
     <div className="max-w-4xl px-10 py-6 mx-auto mt-6 bg-white rounded-lg shadow-md">
@@ -23,11 +25,11 @@ export default function BlogCard({ blog }) {
           <div>
             <a href="#" className="flex items-center">
               <img
-                src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=731&amp;q=80"
+                src={imageUrl}
                 alt="avatar"
                 className="hidden object-cover w-10 h-10 mx-4 rounded-full sm:block"
               />
-              <h1 className="font-bold text-gray-700 hover:underline">Alex John</h1>
+              <h1 className="font-bold text-gray-700 hover:underline">{name}</h1>
             </a>
           </div>
       </div>

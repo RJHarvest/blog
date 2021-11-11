@@ -145,11 +145,11 @@ export default function Blog({ blogs, categories, type }) {
                   <div className="flex items-center justify-between mt-4">
                     <div className="flex items-center">
                       <img
-                        src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=731&amp;q=80"
+                        src={recentBlog.user.imageUrl}
                         alt="avatar"
                         className="object-cover w-8 h-8 rounded-full"
                       />
-                      <a href="#" className="mx-3 text-sm text-gray-700 hover:underline">Alex John</a>
+                      <a href="#" className="mx-3 text-sm text-gray-700 hover:underline">{recentBlog.user.name}</a>
                     </div>
                     <span className="text-sm font-light text-gray-600">{formatDate(recentBlog.createdAt)}</span>
                   </div>
