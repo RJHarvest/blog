@@ -5,25 +5,24 @@ import { CommentForm, Alert } from '../../components'
 
 export default function BlogDetails({ props }) {
   const [blog, setBlog] = useState(props)
+  const [comments, setComments] = useState(props.comments)
   const [showAlert, setShowAlert] = useState(false)
   const [errorMsg, setErrorMsg] = useState('')
-  const [comments] = useState(props.comments.reverse())
 
   const handleCommentSubmit = async (data, e) => {
     e.preventDefault()
 
     try {
-      await insertComment(blogId, data.comment)
+      await insertComment(blog.id, data.comment)
       const newBlog = await getBlog(blog.id)
       setBlog(newBlog)
+      setComments(newBlog.comments.reverse())
       e.target.reset()
     } catch (err) {
-      setErrorMsg(`${err.status}: ${err.statusText}`)
+      setErrorMsg(`${err.extensions.code}: ${err.message}`)
       setShowAlert(true)
     }
   }
-
-  useEffect(() => setBlog(blog), [])
 
   return (
     <div className="container mx-auto pt-10">
@@ -89,6 +88,7 @@ export default function BlogDetails({ props }) {
 BlogDetails.getInitialProps = async (context) => {
   const { query: { blogId } } = context
   const blog = await getBlog(blogId)
+  blog.comments = blog.comments.reverse()
   return {
     props: blog,
     header: {
