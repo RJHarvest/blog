@@ -17,6 +17,12 @@ const typeDefs = gql`
     lifestyle: Int
   }
 
+  type User {
+    id: ID!
+    name: String
+    imageUrl: String
+  }
+
   type Comment {
     id: ID!
     comment: String
@@ -26,6 +32,7 @@ const typeDefs = gql`
 
   type Blog {
     id: ID!
+    user: User
     title: String
     body: String
     type: BlogType
