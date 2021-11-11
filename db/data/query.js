@@ -24,6 +24,11 @@ export async function getBlogs({ limit = 10, page = 1, type = null } = {}) {
       ) {
         docs {
           id
+          user {
+            id
+            name
+            imageUrl
+          }
           title
           body
           type
