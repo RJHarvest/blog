@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import mongoosePaginate from 'mongoose-paginate'
+import mongoosePopulate from 'mongoose-autopopulate'
 import CommentsSchema from './comments'
 
 const { Schema } = mongoose
@@ -7,6 +8,12 @@ const { Schema } = mongoose
 mongoose.Promise = global.Promise
 
 const BlogsSchema = new Schema({
+  user: {
+    type: Schema.Types.ObjectId,
+    required: true,
+    ref: 'Users',
+    autopopulate: true,
+  },
   title: {
     type: String,
     required: true,
@@ -40,5 +47,6 @@ const BlogsSchema = new Schema({
 
 BlogsSchema.index({ title: 'text' })
 BlogsSchema.plugin(mongoosePaginate)
+BlogsSchema.plugin(mongoosePopulate)
 
 module.exports = mongoose.models.Blogs || mongoose.model('Blogs', BlogsSchema)
