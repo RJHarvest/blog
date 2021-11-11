@@ -1,6 +1,8 @@
 import Link from 'next/link'
+import { signIn, signOut, useSession } from "next-auth/client"
 
 export default function Navbar() {
+  const [session] = useSession()
   return (
     <nav className="fixed top-0 w-full z-50 px-6 py-4 bg-white shadow">
       <div className="container flex flex-col mx-auto md:flex-row md:items-center md:justify-between">
@@ -24,6 +26,8 @@ export default function Navbar() {
         <div className="flex-col hidden md:flex md:flex-row md:-mx-4">
           <Link href="/"><a className="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0">Home</a></Link>
           <Link href="/blog"><a className="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0">Blog</a></Link>
+          {!session && <a onClick={() => signIn('google')} className="cursor-pointer my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0">Log in</a>}
+          {session && <a onClick={() => signOut()} className="cursor-pointer my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0">Log out</a>}
         </div>
       </div>
     </nav>
