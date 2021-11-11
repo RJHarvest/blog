@@ -5,11 +5,16 @@ const { Schema } = mongoose
 mongoose.Promise = global.Promise
 
 const UsersSchema = new Schema({
+  googleId: {
+    type: String,
+    required: true,
+    trim: true,
+  },
   name: {
     type: String,
     trim: true,
   },
-  image_url: {
+  imageUrl: {
     type: String,
     trim: true,
   }
