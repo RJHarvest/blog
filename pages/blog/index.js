@@ -17,6 +17,7 @@ export default function Blog({ blogs, categories, type }) {
   const recentBlog = blogs.docs.length > 0 && blogs.docs[0]
   const pages = getPages(blogs.pages)
   const currentPage = blogs.page
+  const authors = blogs.authors
 
   const handlePreviousBtnOnClick = (e) => {
     e.preventDefault()
@@ -81,80 +82,82 @@ export default function Blog({ blogs, categories, type }) {
             <h1 className="mb-4 text-xl font-bold text-gray-700">Authors</h1>
             <div className="flex flex-col max-w-sm px-6 py-4 mx-auto bg-white rounded-lg shadow-md">
               <ul className="-mx-4">
-                  <li className="flex items-center"><img
-                          src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=731&amp;q=80"
-                          alt="avatar" className="object-cover w-10 h-10 mx-4 rounded-full"/>
-                      <p><a href="#" className="mx-1 font-bold text-gray-700 hover:underline">Alex John</a><span
-                              className="text-sm font-light text-gray-700">Created 23 Posts</span></p>
-                  </li>
-                  <li className="flex items-center mt-6"><img
-                          src="https://images.unsplash.com/photo-1464863979621-258859e62245?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=333&amp;q=80"
-                          alt="avatar" className="object-cover w-10 h-10 mx-4 rounded-full"/>
-                      <p><a href="#" className="mx-1 font-bold text-gray-700 hover:underline">Jane Doe</a><span
-                              className="text-sm font-light text-gray-700">Created 52 Posts</span></p>
-                  </li>
-                  <li className="flex items-center mt-6"><img
-                          src="https://images.unsplash.com/photo-1531251445707-1f000e1e87d0?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=281&amp;q=80"
-                          alt="avatar" className="object-cover w-10 h-10 mx-4 rounded-full"/>
-                      <p><a href="#" className="mx-1 font-bold text-gray-700 hover:underline">Lisa Way</a><span
-                              className="text-sm font-light text-gray-700">Created 73 Posts</span></p>
-                  </li>
-                  <li className="flex items-center mt-6"><img
-                          src="https://images.unsplash.com/photo-1500757810556-5d600d9b737d?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=735&amp;q=80"
-                          alt="avatar" className="object-cover w-10 h-10 mx-4 rounded-full"/>
-                      <p><a href="#" className="mx-1 font-bold text-gray-700 hover:underline">Steve Matt</a><span
-                              className="text-sm font-light text-gray-700">Created 245 Posts</span></p>
-                  </li>
-                  <li className="flex items-center mt-6"><img
-                          src="https://images.unsplash.com/photo-1502980426475-b83966705988?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=373&amp;q=80"
-                          alt="avatar" className="object-cover w-10 h-10 mx-4 rounded-full"/>
-                      <p><a href="#" className="mx-1 font-bold text-gray-700 hover:underline">Khatab
-                              Wedaa</a><span className="text-sm font-light text-gray-700">Created 332 Posts</span>
-                      </p>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div className="px-8 mt-10">
-              <h1 className="mb-4 text-xl font-bold text-gray-700">Categories</h1>
-              <div className="flex flex-col max-w-sm px-4 py-6 mx-auto bg-white rounded-lg shadow-md">
-                <ul>
-                  {categories.map((category, index) => (
-                    <li className={index === 0 ? null : "mt-2"} key={index}>
-                      <Link href={`?type=${category}`}>
-                        <a className="mx-1 font-bold text-gray-700 capitalize hover:text-gray-600 hover:underline">
-                          - {category}
-                        </a>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-            <div className="px-8 mt-10">
-              <h1 className="mb-4 text-xl font-bold text-gray-700">Recent Post</h1>
-              <div className="flex flex-col max-w-sm px-8 py-6 mx-auto bg-white rounded-lg shadow-md">
-                <div className="flex items-center justify-center">
-                  <Link href="#"><a className={`${getTagColor(recentBlog.type)} px-2 py-1 text-sm capitalize rounded`}>{recentBlog.type}</a></Link>
-                  </div>
-                  <div className="mt-4">
-                    <Link href={`/blog/${recentBlog.id}`}>
-                      <a className="text-lg font-medium text-gray-700 hover:underline">{recentBlog.title}</a>
-                    </Link>
-                  </div>
-                  <div className="flex items-center justify-between mt-4">
-                    <div className="flex items-center">
+                {
+                  authors.map((author, index) => (
+                    <li key={index} className={`flex items-center ${index === 0 ? null : 'mt-6'}`}>
                       <img
-                        src={recentBlog.user.imageUrl}
+                        src={author.imageUrl}
                         alt="avatar"
-                        className="object-cover w-8 h-8 rounded-full"
+                        className="object-cover w-10 h-10 mx-4 rounded-full"
                       />
-                      <a href="#" className="mx-3 text-sm text-gray-700 hover:underline">{recentBlog.user.name}</a>
-                    </div>
-                    <span className="text-sm font-light text-gray-600">{formatDate(recentBlog.createdAt)}</span>
-                  </div>
-                </div>
+                      <p>
+                        <Link href={`?author=${author._id}`}><a className="mx-1 font-bold text-gray-700 hover:underline">{author.name}</a></Link>
+                        <span className="text-sm font-light text-gray-700">Created {author.blogCount} Posts</span>
+                      </p>
+                    </li>
+                  ))
+                }
+                <li className="flex items-center mt-6"><img
+                        src="https://images.unsplash.com/photo-1464863979621-258859e62245?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=333&amp;q=80"
+                        alt="avatar" className="object-cover w-10 h-10 mx-4 rounded-full"/>
+                    <p><a href="#" className="mx-1 font-bold text-gray-700 hover:underline">Jane Doe</a><span
+                            className="text-sm font-light text-gray-700">Created 52 Posts</span></p>
+                </li>
+                <li className="flex items-center mt-6"><img
+                        src="https://images.unsplash.com/photo-1531251445707-1f000e1e87d0?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=281&amp;q=80"
+                        alt="avatar" className="object-cover w-10 h-10 mx-4 rounded-full"/>
+                    <p><a href="#" className="mx-1 font-bold text-gray-700 hover:underline">Lisa Way</a><span
+                            className="text-sm font-light text-gray-700">Created 73 Posts</span></p>
+                </li>
+                <li className="flex items-center mt-6"><img
+                        src="https://images.unsplash.com/photo-1500757810556-5d600d9b737d?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=735&amp;q=80"
+                        alt="avatar" className="object-cover w-10 h-10 mx-4 rounded-full"/>
+                    <p><a href="#" className="mx-1 font-bold text-gray-700 hover:underline">Steve Matt</a><span
+                            className="text-sm font-light text-gray-700">Created 245 Posts</span></p>
+                </li>
+              </ul>
             </div>
+          </div>
+          <div className="px-8 mt-10">
+            <h1 className="mb-4 text-xl font-bold text-gray-700">Categories</h1>
+            <div className="flex flex-col max-w-sm px-4 py-6 mx-auto bg-white rounded-lg shadow-md">
+              <ul>
+                {categories.map((category, index) => (
+                  <li className={index === 0 ? null : "mt-2"} key={index}>
+                    <Link href={`?type=${category}`}>
+                      <a className="mx-1 font-bold text-gray-700 capitalize hover:text-gray-600 hover:underline">
+                        - {category}
+                      </a>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+          <div className="px-8 mt-10">
+            <h1 className="mb-4 text-xl font-bold text-gray-700">Recent Post</h1>
+            <div className="flex flex-col max-w-sm px-8 py-6 mx-auto bg-white rounded-lg shadow-md">
+              <div className="flex items-center justify-center">
+                <Link href="#"><a className={`${getTagColor(recentBlog.type)} px-2 py-1 text-sm capitalize rounded`}>{recentBlog.type}</a></Link>
+              </div>
+              <div className="mt-4">
+                <Link href={`/blog/${recentBlog.id}`}>
+                  <a className="text-lg font-medium text-gray-700 hover:underline">{recentBlog.title}</a>
+                </Link>
+              </div>
+              <div className="flex items-center justify-between mt-4">
+                <div className="flex items-center">
+                  <img
+                    src={recentBlog.user.imageUrl}
+                    alt="avatar"
+                    className="object-cover w-8 h-8 rounded-full"
+                  />
+                  <a href="#" className="mx-3 text-sm text-gray-700 hover:underline">{recentBlog.user.name}</a>
+                </div>
+                <span className="text-sm font-light text-gray-600">{formatDate(recentBlog.createdAt)}</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -162,8 +165,8 @@ export default function Blog({ blogs, categories, type }) {
 }
 
 Blog.getInitialProps = async (context) => {
-  const { query: { page, type } } = context
-  const blogs = await getBlogs({ limit: 10, page, type })
+  const { query: { page, type, author } } = context
+  const blogs = await getBlogs({ limit: 10, page, type, author })
   return {
     blogs,
     type,
