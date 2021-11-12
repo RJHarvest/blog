@@ -17,10 +17,24 @@ const typeDefs = gql`
     lifestyle: Int
   }
 
+  type Profile {
+    id: ID!
+    name: String
+    imageUrl: String
+    blogs: [Blog]
+  }
+
   type User {
     id: ID!
     name: String
     imageUrl: String
+  }
+
+  type UserBlogCount {
+    _id: ID!
+    name: String
+    imageUrl: String
+    blogCount: Int
   }
 
   type Comment {
@@ -43,6 +57,7 @@ const typeDefs = gql`
 
   type BlogPage {
     docs: [Blog]
+    authors: [UserBlogCount]
     total: Int
     limit: Int
     page: Int
@@ -60,16 +75,16 @@ const typeDefs = gql`
   }
 
   type Query {
-    blogs(limit: Int!, page: Int!, type: BlogType): BlogPage
+    blogs(limit: Int!, page: Int!, type: BlogType, authorId: ID): BlogPage
     blog(id: ID!): Blog
     typeCount: TypeCount
+    profile(id: ID!): Profile
   }
 
   type Mutation {
     newBlog(input: BlogInput!): Blog
     updateBlog(id: ID!, input: BlogInput!): Blog
     newComment(blogId: ID!, input: CommentInput!): Blog
-    updateComment(blogId: ID!, commentId: ID!, input: CommentInput!): Blog
   }
 `
 

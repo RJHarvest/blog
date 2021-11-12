@@ -1,11 +1,41 @@
 import { AuthenticationError, UserInputError } from 'apollo-server-micro'
+import User from '../models/users'
 import Blog from '../models/blogs'
+
+const ObjectId = require('mongodb').ObjectID
 
 const resolvers = {
   Query: {
-    blogs: async (_, { limit, page, type }) => {
-      const query = type ? { type } : {}
-      return await Blog.paginate(query, { limit, page, sort: { createdAt: 'desc' } })
+    blogs: async (_, { limit, page, type, authorId }) => {
+      let query = {}
+      if (type) query = { type }
+      if (authorId) query = { user: ObjectId(authorId) }
+      const blogs = await Blog.paginate(query, { limit, page, sort: { createdAt: 'desc' } })
+
+      const userBlogCount = await User.aggregate([
+        {
+          $lookup: {
+            from: 'blogs',
+            localField: '_id',
+            foreignField: 'user',
+            as: 'blogs'
+          }
+        },
+        { $unwind: '$blogs' },
+        {
+          $group: {
+            _id: '$_id',
+            name: { $first: '$name' },
+            imageUrl: { $first: '$imageUrl' },
+            blogCount: { $sum: 1 }
+          }
+        },
+        { $limit : 5 },
+        { $sort: { name: 1 } }
+      ])
+
+      blogs.authors = userBlogCount
+      return blogs
     },
     blog: async (_, { id }) => {
       const blog = await Blog.findById(id)
@@ -24,22 +54,27 @@ const resolvers = {
         tech: techCount,
         lifestyle: lifestyleCount,
       }
+    },
+    profile: async (_, { id }) => {
+      const user = await User.findOne({ _id: id })
+      if (!user) throw new UserInputError('User not found')
+
+      const blogs = await Blog.find({ user: ObjectId(id) }).sort({ createdAt: 'desc' })
+      user.blogs = blogs
+      return user
     }
   },
 
   Mutation: {
     // blogs
     newBlog: async (_, { input }, { session }) => {
-      if (!session) throw new AuthenticationError('User must be logged in')
-      try {
-        const blog = new Blog(input)
-        return await blog.save()
-      } catch (err) {
-        throw err
-      }
+      if (!session) throw new AuthenticationError('You must be logged in')
+
+      const blog = new Blog(input)
+      return await blog.save()
     },
     updateBlog: async (_, { id, input }, { session }) => {
-      if (!session) throw new AuthenticationError('User must be logged in')
+      if (!session) throw new AuthenticationError('You must be logged in')
 
       const blog = await Blog.findById(id)
       if (!blog) throw new UserInputError('Blog not found')
@@ -49,9 +84,7 @@ const resolvers = {
       })
     },
     // comments
-    newComment: async (_, { blogId, input }, { session }) => {
-      if (!session) throw new AuthenticationError('User must be logged in')
-
+    newComment: async (_, { blogId, input }) => {
       const blog = await Blog.findById(blogId)
       if (!blog) throw new UserInputError('Blog not found')
 
@@ -59,16 +92,6 @@ const resolvers = {
       blog.markModified('comments')
       return await blog.save()
     },
-    updateComment: async (_, { blogId, commentId, input }, { session }) => {
-      if (!session) throw new AuthenticationError('User must be logged in')
-
-      const blog = await Blog.findById(blogId)
-      if (!blog) throw new UserInputError('Blog not found')
-
-      blog.comments.id(commentId).comment = input.comment
-      blog.markModified('comments')
-      return await blog.save()
-    }
   },
 }
 

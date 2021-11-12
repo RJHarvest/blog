@@ -14,13 +14,14 @@ export async function fetchData(query) {
   return Promise.resolve(resBody.data)
 }
 
-export async function getBlogs({ limit = 10, page = 1, type = null } = {}) {
+export async function getBlogs({ limit = 10, page = 1, type = null, author = null } = {}) {
   const query = `
     query {
       blogs(
         limit: ${limit}
         page: ${page}
         type: ${type}
+        authorId: ${author ? `"${author}"` : null}
       ) {
         docs {
           id
@@ -34,6 +35,12 @@ export async function getBlogs({ limit = 10, page = 1, type = null } = {}) {
           type
           createdAt
           updatedAt
+        }
+        authors {
+          _id
+          name
+          imageUrl
+          blogCount
         }
         total
         limit
@@ -51,6 +58,11 @@ export async function getBlog(blogId) {
     query {
       blog(id: "${blogId}") {
         id
+        user {
+          id
+          name
+          imageUrl
+        }
         title
         body
         type
@@ -151,4 +163,28 @@ export async function updateComment(blogId, commentId, comment) {
     }
   `
   return await fetchData(query)
+}
+
+export async function getProfile(userId) {
+  const query = `
+    query {
+      profile(
+        id: "${userId}"
+      ) {
+        id
+        name
+        imageUrl
+        blogs {
+          id
+          title
+          body
+          type
+          createdAt
+          updatedAt
+        }
+      }
+    }
+  `
+  const result = await fetchData(query)
+  return result.profile
 }
