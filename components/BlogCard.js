@@ -3,8 +3,6 @@ import { getTagColor, formatDate } from '../shared/utils'
 
 export default function BlogCard({ blog }) {
   const { id, title, body, type, createdAt, user: { name, imageUrl } } = blog
-  console.log('blog 1', name);
-  console.log('blog 2', imageUrl);
   const tagColor = getTagColor(type)
   return (
     <div className="max-w-4xl px-10 py-6 mx-auto mt-6 bg-white rounded-lg shadow-md">
