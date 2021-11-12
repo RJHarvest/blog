@@ -12,17 +12,18 @@ export default NextAuth({
   ],
   session: {
     jwt: true,
-    maxAge: 7 * 24 * 60 * 60 // the session will last 7 days
+    maxAge: 24 * 60 * 60 // the session will last 1 day
   },
   callbacks: {
     jwt: async (token, user) => {
       if (user) {
-        const existingUser = await User.findOne({ google_id: user.id })
+        const existingUser = await User.findOne({ googleId: user.id })
         if (existingUser) return Promise.resolve({ ...existingUser })
 
         const newUser = await User({
           name: user.name,
-          image_url: user.image,
+          googleId: user.id,
+          imageUrl: user.image,
         }).save()
         return Promise.resolve({ ...newUser })
       }
