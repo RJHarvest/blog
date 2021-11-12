@@ -65,9 +65,9 @@ export default function Home({ props, categories, typeCount }) {
                   <p className="text-gray-700 text-base">{blog.body}</p>
                 </div>
                 <div className="flex mt-3">
-                  <img src="https://randomuser.me/api/portraits/men/86.jpg" className="h-10 w-10 rounded-full mr-2 object-cover" />
+                  <img src={blog.user.imageUrl} className="h-10 w-10 rounded-full mr-2 object-cover" />
                   <div>
-                    <p className="font-semibold text-gray-700 text-sm capitalize">eduard franz</p>
+                    <p className="font-semibold text-gray-700 text-sm capitalize">{blog.user.name}</p>
                     <p className="text-gray-600 text-xs">{formatDate(blog.createdAt)}</p>
                   </div>
                 </div>
