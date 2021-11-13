@@ -45,7 +45,7 @@ export default function BlogDetails({ props }) {
         />
       </div>
       <div className="flex flex-col lg:flex-row lg:space-x-12">
-        <div className="px-4 lg:px-0 mt-12 text-gray-700 text-lg leading-relaxed w-full lg:w-3/4">
+        <div className="px-4 lg:px-0 mt-12 text-gray-700 text-xl leading-relaxed w-full lg:w-3/4">
           <p>{blog.body}</p>
         </div>
         <div className="w-full lg:w-1/4 m-auto mt-12 max-w-screen-sm">
