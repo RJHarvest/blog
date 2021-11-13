@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form'
 
-export default function CommentForm({ onSubmit, blogId }) {
+export default function CommentForm({ onSubmit }) {
   const {
     register,
     handleSubmit,

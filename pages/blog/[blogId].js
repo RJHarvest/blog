@@ -71,7 +71,7 @@ export default function BlogDetails({ props }) {
       </div>
       <hr />
       <div className="pt-10">
-        <CommentForm onSubmit={handleCommentSubmit} blogId={blog.id} />
+        <CommentForm onSubmit={handleCommentSubmit} />
       </div>
       <div className="bg-white px-8">
         <h2 className='text-3xl mb-4'>Comments ({blog.comments.length})</h2>
