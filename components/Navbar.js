@@ -26,6 +26,7 @@ export default function Navbar() {
         <div className="flex-col hidden md:flex md:flex-row md:-mx-4">
           <Link href="/"><a className="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0">Home</a></Link>
           <Link href="/blog"><a className="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0">Blog</a></Link>
+          {session && <Link href="/profile"><a className="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0">Profile</a></Link>}
           {!session && <a onClick={() => signIn('google')} className="cursor-pointer my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0">Log in</a>}
           {session && <a onClick={() => signOut()} className="cursor-pointer my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0">Log out</a>}
         </div>
