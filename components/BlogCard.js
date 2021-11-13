@@ -20,15 +20,13 @@ export default function BlogCard({ blog }) {
         <Link href={`/blog/${id}`}>
           <a className="text-blue-500 hover:underline">Read more</a>
         </Link>
-          <div>
-            <a href="#" className="flex items-center">
-              <img
-                src={imageUrl}
-                alt="avatar"
-                className="hidden object-cover w-10 h-10 mx-4 rounded-full sm:block"
-              />
-              <h1 className="font-bold text-gray-700 hover:underline">{name}</h1>
-            </a>
+          <div className="flex items-center">
+            <img
+              src={imageUrl}
+              alt="avatar"
+              className="hidden object-cover w-10 h-10 mx-4 rounded-full sm:block"
+            />
+            <h1 className="font-bold text-gray-700">{name}</h1>
           </div>
       </div>
     </div>
