@@ -70,18 +70,20 @@ const resolvers = {
     newBlog: async (_, { input }, { session }) => {
       if (!session) throw new AuthenticationError('You must be logged in')
 
-      const blog = new Blog(input)
+      const blog = new Blog({ ...input, user: session.user.uid })
       return await blog.save()
     },
-    updateBlog: async (_, { id, input }, { session }) => {
+    updateBlog: async (_, { id, userId, input }, { session }) => {
       if (!session) throw new AuthenticationError('You must be logged in')
 
       const blog = await Blog.findById(id)
       if (!blog) throw new UserInputError('Blog not found')
 
-      return await Blog.findOneAndUpdate({ _id: id }, input, {
-        new: true,
-      })
+      return await Blog.findOneAndUpdate(
+        { _id: id },
+        { ...input, user: session.user.id },
+        { new: true }
+      )
     },
     // comments
     newComment: async (_, { blogId, input }) => {
