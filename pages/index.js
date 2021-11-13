@@ -3,6 +3,12 @@ import Link from 'next/link'
 import { getBlogs, getTypeCount } from '../db/data/query'
 import { formatDate } from '../shared/utils'
 
+const imageUrls = [
+  'https://images.unsplash.com/photo-1552733407-5d5c46c3bb3b?ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8dHJhdmVsfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=60',
+  'https://images.unsplash.com/photo-1484723091739-30a097e8f929?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8Zm9vZHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=60',
+  'https://images.unsplash.com/photo-1536008046477-01746710ffb9?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTl8fGxpZmVzdHlsZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=60'
+]
+
 export default function Home({ props, categories, typeCount }) {
   const [blogs, setBlogs] = useState(props.docs)
 
@@ -50,12 +56,12 @@ export default function Home({ props, categories, typeCount }) {
 
       <div className="block lg:flex lg:space-x-2 px-2 lg:p-0 mt-10 mb-10">
         <div className="w-full lg:w-2/3">
-        {blogs.map(blog => (
+        {blogs.map((blog, index) => (
           <Link href={`/blog/${blog.id}`} key={blog.id}>
-            <a className="block rounded w-full lg:flex mb-10">
+            <a className="block rounded w-full lg:flex mb-5">
               <div
-                className="h-56 lg:w-56 flex-none bg-cover text-center overflow-hidden opacity-75"
-                style={{ backgroundImage: "url('https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2100&q=80')" }}
+                className="h-56 lg:w-56 flex-none bg-cover text-center overflow-hidden opacity-100"
+                style={{ backgroundImage: `url('${imageUrls[index]}')` }}
                 title="deit is very important"
               >
               </div>
